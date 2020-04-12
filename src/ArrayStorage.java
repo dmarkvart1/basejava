@@ -5,6 +5,12 @@ public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
     void clear() {
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] == null) {
+                break;
+            } else storage[i]=null;
+        }
+
     }
 
     void save(Resume r) {
@@ -32,7 +38,19 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return new Resume[0];
+        Resume[] remove = new Resume[0];
+        int count = 0;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                count++;
+            } else break;
+
+        }
+
+        remove = new Resume[count];
+        System.arraycopy(storage, 0, remove, 0, count);
+
+        return remove;
     }
 
     int size() {
