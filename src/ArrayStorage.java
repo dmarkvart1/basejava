@@ -2,13 +2,13 @@
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    Resume[] storage = new Resume[4];
 
     void clear() {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
                 break;
-            } else storage[i]=null;
+            } else storage[i] = null;
         }
 
     }
@@ -34,11 +34,10 @@ public class ArrayStorage {
     void delete(String uuid) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
-                break;
-            } else
-                if (storage[i].uuid == uuid){
-                    storage[i]=null;
-            } else  break;
+                continue;
+            } else if (storage[i].uuid == uuid) {
+                storage[i] = null;
+            }
         }
     }
 
@@ -47,27 +46,35 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] remove = new Resume[0];
+        Resume[] withoutNull = new Resume[0];
         int count = 0;
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 count++;
-            } else break;
-
+            }
+        }
+        withoutNull = new Resume[count];
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                for (int w = 0; w < withoutNull.length; w++) {
+                    if (withoutNull[w] == null) {
+                        withoutNull[w] = storage[i];
+                        break;
+                    }
+                }
+            }
         }
 
-        remove = new Resume[count];
-        System.arraycopy(storage, 0, remove, 0, count);
-
-        return remove;
+        return withoutNull;
     }
 
     int size() {
+        int count = 0;
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                return i;
+            if (storage[i] != null) {
+                count++;
             }
         }
-        return 0;
+        return count;
     }
 }
