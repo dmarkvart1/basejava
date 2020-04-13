@@ -10,6 +10,7 @@ public class ArrayStorage {
     void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
+            size = 0;
         }
 
     }
@@ -46,23 +47,14 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] withoutNull = new Resume[0];
-        int count = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                count++;
-            }
-        }
-        withoutNull = new Resume[count];
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                for (int w = 0; w < withoutNull.length; w++) {
+        Resume[] withoutNull = new Resume[size];
+        for (int i = 0; i < size; i++) {
+                for (int w = 0; w < size; w++) {
                     if (withoutNull[w] == null) {
                         withoutNull[w] = storage[i];
                         break;
                     }
                 }
-            }
         }
 
         return withoutNull;
