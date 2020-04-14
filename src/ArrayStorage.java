@@ -10,19 +10,14 @@ public class ArrayStorage {
     void clear() {
         for (int i = 0; i < size; i++) {
             storage[i] = null;
-            size = 0;
         }
-
+        size = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i <= size; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                size++;
-                break;
-            }
-        }
+        storage[size] = r;
+        size++;
+
     }
 
     Resume get(String uuid) {
@@ -47,17 +42,11 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] withoutNull = new Resume[size];
+        Resume[] resumes = new Resume[size];
         for (int i = 0; i < size; i++) {
-                for (int w = 0; w < size; w++) {
-                    if (withoutNull[w] == null) {
-                        withoutNull[w] = storage[i];
-                        break;
-                    }
-                }
+            resumes[i] = storage[i];
         }
-
-        return withoutNull;
+        return resumes;
     }
 
     int size() {
