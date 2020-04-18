@@ -17,8 +17,12 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        storage[size] = r;
-        size++;
+        if (size == 10000) {
+            System.out.println("Массив полностью заполнен, удалите записи что бы освободить место.");
+        } else {
+            storage[size] = r;
+            size++;
+        }
     }
 
     public void update(String uuid) {

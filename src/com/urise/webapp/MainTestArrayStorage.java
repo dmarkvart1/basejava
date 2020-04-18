@@ -8,6 +8,7 @@ import com.urise.webapp.storage.ArrayStorage;
  */
 public class MainTestArrayStorage {
     static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private static Resume r;
 
     public static void main(String[] args) {
         Resume r1 = new Resume();
@@ -35,6 +36,13 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
+
+        for (int i = 0; i < 10001; i++) {
+            r = new Resume();
+            r.setUuid("uuid"+i);
+            System.out.println(r.getUuid());
+            ARRAY_STORAGE.save(r);
+        }
     }
 
     static void printAll() {
