@@ -6,7 +6,7 @@ import com.urise.webapp.model.Resume;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
     public void clear() {
@@ -16,11 +16,11 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void save(Resume r) {
-        if (size == 10000) {
+    public void save(Resume resume) {
+        if (size == storage.length) {
             System.out.println("Массив полностью заполнен, удалите записи что бы освободить место.");
         } else {
-            storage[size] = r;
+            storage[size] = resume;
             size++;
         }
     }
@@ -28,7 +28,7 @@ public class ArrayStorage {
     public void update(String uuid) {
         objectExists(uuid);
         for (int i = 0; i < size; i++) {
-            if (uuid == storage[i].getUuid()) {
+            if (uuid.equals(storage[i].getUuid())) {
                 storage[i].setUuid(uuid + "_update");
             }
         }
@@ -37,8 +37,9 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         objectExists(uuid);
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid() == uuid)
+            if (uuid.equals(storage[i].getUuid())) {
                 return storage[i];
+            }
         }
         return null;
     }
@@ -46,22 +47,22 @@ public class ArrayStorage {
     public void delete(String uuid) {
         objectExists(uuid);
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid() == uuid) {
+            if (uuid.equals(storage[i].getUuid())) {
                 System.arraycopy(storage, i + 1, storage, i, storage.length - 1 - i);
                 size--;
             }
         }
     }
 
-    public boolean objectExists(String uuid) {
+    public Resume objectExists(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid() == uuid) {
+            if (uuid.equals(storage[i].getUuid())) {
                 System.out.println(uuid + ": Объкт существует");
-                return true;
+                return storage[i];
             }
         }
         System.out.println(uuid + ": Объект не существует");
-        return false;
+        return null;
     }
 
     /**
