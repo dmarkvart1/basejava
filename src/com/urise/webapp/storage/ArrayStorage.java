@@ -1,5 +1,7 @@
 package com.urise.webapp.storage;
+
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -13,7 +15,6 @@ public class ArrayStorage {
         Arrays.fill(storage, null);
         size = 0;
     }
-
 
     public void save(Resume resume) {
         if (size == storage.length) {
@@ -32,8 +33,7 @@ public class ArrayStorage {
 
     public void update(Resume resume) {
         int index = objectExists(resume.getUuid());
-        if (index == -1) {
-        } else {
+        if (index != -1) {
             storage[index] = resume;
             System.out.println("Объект обновлен:" + resume.getUuid());
         }
@@ -41,8 +41,7 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         int index = objectExists(uuid);
-        if (index == -1) {
-        } else {
+        if (index != -1) {
             System.out.println("Объект получен:" + storage[index]);
             return storage[index];
         }
@@ -51,9 +50,8 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int index = objectExists(uuid);
-        if (index == -1) {
-        } else {
-            System.arraycopy(storage, index + 1, storage, index, 2);
+        if (index != -1) {
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
             System.out.println("Объект удален:" + uuid);
             size--;
         }
@@ -75,7 +73,7 @@ public class ArrayStorage {
      */
     public Resume[] getAll() {
         Resume[] resumes;
-        resumes = Arrays.copyOfRange(storage, size, size);
+        resumes = Arrays.copyOfRange(storage, 0, size);
         return resumes;
     }
 
