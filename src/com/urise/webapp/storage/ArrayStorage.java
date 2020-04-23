@@ -7,8 +7,9 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10_000];
+public class ArrayStorage implements Storage{
+    private static final int STOTAGE_LIMIT = 10_000;
+    private Resume[] storage = new Resume[STOTAGE_LIMIT];
     private int size = 0;
 
     public void clear() {
@@ -17,7 +18,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (size == storage.length) {
+        if (size == STOTAGE_LIMIT) {
             System.out.println("Массив полностью заполнен, удалите записи что бы освободить место.");
         } else {
             int index = indexOf(resume.getUuid());
