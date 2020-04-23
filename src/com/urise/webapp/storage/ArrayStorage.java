@@ -57,7 +57,7 @@ public class ArrayStorage {
         }
     }
 
-    public int indexOf(String uuid) {
+    private int indexOf(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 System.out.println("Объкт существует:" + uuid);
@@ -72,9 +72,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] resumes;
-        resumes = Arrays.copyOfRange(storage, 0, size);
-        return resumes;
+        return Arrays.copyOf(storage, size);
     }
 
     public int size() {
