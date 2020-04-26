@@ -4,23 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
-public class SortedArrayStotage extends AbstractArrayStorage{
-
-    @Override
-    public void save(Resume resume) {
-
-    }
-
-    @Override
-    public void update(Resume resume) {
-
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
+public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected int indexOf(String uuid) {
         Resume searchKey = new Resume();
@@ -29,7 +13,12 @@ public class SortedArrayStotage extends AbstractArrayStorage{
     }
 
     @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+    public Resume get(String uuid) {
+        int index = indexOf(uuid);
+        if (index >= 0) {
+            System.out.println("Объект получен:" + storage[index]);
+            return storage[index];
+        }
+        return null;
     }
 }

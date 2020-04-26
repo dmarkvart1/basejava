@@ -8,47 +8,6 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage implements Storage {
-    private static final int STOTAGE_LIMIT = 10_000;
-    private Resume[] storage = new Resume[STOTAGE_LIMIT];
-    private int size = 0;
-
-    public void clear() {
-        Arrays.fill(storage, null);
-        size = 0;
-    }
-
-    public void save(Resume resume) {
-        if (size == STOTAGE_LIMIT) {
-            System.out.println("Массив полностью заполнен, удалите записи что бы освободить место.");
-        } else {
-            int index = indexOf(resume.getUuid());
-            if (index == -1) {
-                storage[size] = resume;
-                System.out.println("Объект сохранен:" + resume.getUuid());
-                size++;
-            } else {
-                System.out.println("Запись невозможна!");
-            }
-        }
-    }
-
-    public void update(Resume resume) {
-        int index = indexOf(resume.getUuid());
-        if (index != -1) {
-            storage[index] = resume;
-            System.out.println("Объект обновлен:" + resume.getUuid());
-        }
-    }
-
-
-    public void delete(String uuid) {
-        int index = indexOf(uuid);
-        if (index != -1) {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-            System.out.println("Объект удален:" + uuid);
-            size--;
-        }
-    }
 
     protected int indexOf(String uuid) {
         for (int i = 0; i < size; i++) {
@@ -59,12 +18,5 @@ public class ArrayStorage extends AbstractArrayStorage implements Storage {
         }
         System.out.println("Объект не существует:" + uuid);
         return -1;
-    }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
     }
 }

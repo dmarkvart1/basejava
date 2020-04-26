@@ -2,6 +2,8 @@ package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
+import com.urise.webapp.storage.SortedArrayStorage;
+import com.urise.webapp.storage.Storage;
 
 import java.util.Arrays;
 
@@ -9,7 +11,7 @@ import java.util.Arrays;
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestArrayStorage {
-    private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    private static final Storage ARRAY_STORAGE = new SortedArrayStorage();
     private static Resume r;
 
     public static void main(String[] args) {
@@ -29,7 +31,7 @@ public class MainTestArrayStorage {
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
-//        System.out.println("Index of r2: " + Arrays.binarySearch(ARRAY_STORAGE.storage, 0, ARRAY_STORAGE.size(), r2));
+        System.out.println("Index of r2: " + ARRAY_STORAGE.get(r2.getUuid()));
 
         printAll();
         ARRAY_STORAGE.update(r1);
@@ -49,7 +51,7 @@ public class MainTestArrayStorage {
         }
     }
 
-    private static void printAll() {
+    static void printAll() {
         System.out.println("\nGet All");
         for (Resume r : ARRAY_STORAGE.getAll()) {
             System.out.println(r);
