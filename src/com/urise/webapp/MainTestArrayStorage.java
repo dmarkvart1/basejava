@@ -1,11 +1,8 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
 import com.urise.webapp.storage.SortedArrayStorage;
 import com.urise.webapp.storage.Storage;
-
-import java.util.Arrays;
 
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
@@ -43,12 +40,12 @@ public class MainTestArrayStorage {
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        for (int i = 0; i < 10_001; i++) {
+        for (int i = 0; i < 10_000; i++) {
             r = new Resume();
             r.setUuid("uuid" + i);
-            System.out.println(r.getUuid());
             ARRAY_STORAGE.save(r);
         }
+        printAll();
     }
 
     static void printAll() {

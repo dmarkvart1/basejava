@@ -19,4 +19,12 @@ public class ArrayStorage extends AbstractArrayStorage implements Storage {
         System.out.println("Объект не существует:" + uuid);
         return -1;
     }
+    public void delete(String uuid) {
+        int index = indexOf(uuid);
+        if (index != -1) {
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            System.out.println("Объект удален:" + uuid);
+            size--;
+        }
+    }
 }
