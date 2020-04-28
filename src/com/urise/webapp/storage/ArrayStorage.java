@@ -9,6 +9,19 @@ import java.util.Arrays;
  */
 public class ArrayStorage extends AbstractArrayStorage implements Storage {
 
+    @Override
+    protected void differAction(Resume resume) {
+        int index = indexOf(resume.getUuid());
+        if (index < 0) {
+            storage[size] = resume;
+            System.out.println("Объект сохранен:" + resume.getUuid());
+            size++;
+        } else {
+            System.out.println("Запись невозможна!");
+        }
+    }
+
+    @Override
     protected int indexOf(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
@@ -19,12 +32,5 @@ public class ArrayStorage extends AbstractArrayStorage implements Storage {
         System.out.println("Объект не существует:" + uuid);
         return -1;
     }
-    public void delete(String uuid) {
-        int index = indexOf(uuid);
-        if (index != -1) {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-            System.out.println("Объект удален:" + uuid);
-            size--;
-        }
-    }
+
 }
