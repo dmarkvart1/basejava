@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exeption.ExistStorageException;
+import com.urise.webapp.exeption.NotExistStorageException;
+import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -22,18 +25,28 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public void save(Resume resume) {
         if (size == STORAGE_LIMIT) {
-            System.out.println("Массив полностью заполнен, удалите записи что бы освободить место.");
+            throw new StorageException("Storage overflow", resume.getUuid());
         } else {
-            differAction(resume);
+            int index = indexOf(resume.getUuid());
+            if (index < 0) {
+                saveElement(resume, index);
+                System.out.println("Объект сохранен:" + resume.getUuid());
+                size++;
+            } else {
+                throw new ExistStorageException(resume.getUuid());
+            }
         }
     }
-    protected abstract void differAction(Resume resume);
+
+    protected abstract void saveElement(Resume resume, int index);
 
     public void update(Resume resume) {
         int index = indexOf(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
             System.out.println("Объект обновлен:" + resume.getUuid());
+        } else {
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -42,18 +55,25 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             System.out.println("Объект получен:" + storage[index]);
             return storage[index];
+        } else {
+//            throw new NotExistStorageException(uuid);
+            return null;
         }
-        return null;
     }
 
     public void delete(String uuid) {
         int index = indexOf(uuid);
         if (index >= 0) {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            delElement(index);
             System.out.println("Объект удален:" + uuid);
+            storage[size - 1] = null;
             size--;
+        } else {
+            throw new NotExistStorageException(uuid);
         }
     }
+
+    protected abstract void delElement(int index);
 
     /**
      * @return array, contains only Resumes in storage (without null)
