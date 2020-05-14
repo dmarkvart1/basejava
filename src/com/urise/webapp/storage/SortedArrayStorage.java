@@ -1,13 +1,10 @@
 package com.urise.webapp.storage;
-
-import com.urise.webapp.exeption.ExistStorageException;
 import com.urise.webapp.model.Resume;
+import org.junit.runner.JUnitCore;
 
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-
-
     @Override
     protected void saveElement(Resume resume, int index) {
         int indexSave = -(index + 1);

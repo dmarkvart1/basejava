@@ -39,7 +39,7 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         for (int i = 0; i < 10_001; i++) {
-            r = new Resume("uuid"+i);
+            r = new Resume();
             ARRAY_STORAGE.save(r);
         }
         printAll();

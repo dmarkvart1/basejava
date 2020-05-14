@@ -56,8 +56,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Объект получен:" + storage[index]);
             return storage[index];
         } else {
-//            throw new NotExistStorageException(uuid);
-            return null;
+            throw new NotExistStorageException(uuid);
         }
     }
 
