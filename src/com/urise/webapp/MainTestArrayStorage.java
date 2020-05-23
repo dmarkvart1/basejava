@@ -2,6 +2,7 @@ package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
+import com.urise.webapp.storage.ListStorage;
 import com.urise.webapp.storage.SortedArrayStorage;
 import com.urise.webapp.storage.Storage;
 
@@ -38,7 +39,7 @@ public class MainTestArrayStorage {
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
-        for (int i = 0; i < 10_001; i++) {
+        for (int i = 0; i < 1000; i++) {
             r = new Resume();
             ARRAY_STORAGE.save(r);
         }
