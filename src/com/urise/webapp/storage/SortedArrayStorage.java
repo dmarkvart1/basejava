@@ -1,6 +1,5 @@
 package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
-import org.junit.runner.JUnitCore;
 
 import java.util.Arrays;
 
@@ -10,16 +9,18 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int indexSave = -(index + 1);
         System.arraycopy(storage, indexSave, storage, indexSave + 1, size - indexSave);
         storage[indexSave] = resume;
+        size++;
     }
 
     @Override
     protected void delElement(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
-    protected int indexOf(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey);
+    protected int indexElement(Resume resume) {
+        return Arrays.binarySearch(storage, 0, size, resume);
     }
 }
