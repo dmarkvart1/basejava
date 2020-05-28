@@ -6,9 +6,6 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    @Override
-    public abstract void clear();
-
     protected int indexOf(String uuid) {
         Resume searchKey = new Resume(uuid);
         int index = indexElement(searchKey);

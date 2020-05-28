@@ -17,17 +17,4 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
         return -1;
     }
-
-    @Override
-    protected void saveElement(Resume resume, int index) {
-        storage[size] = resume;
-        size++;
-    }
-
-    @Override
-    protected void delElement(int index) {
-        storage[index] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
-    }
 }

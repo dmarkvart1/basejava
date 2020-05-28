@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected List<Resume> listStorage = new ArrayList<>();
-
+    private List<Resume> listStorage = new ArrayList<>();
 
     @Override
     protected int indexElement(Resume index) {
@@ -42,8 +41,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        Resume[] arr = listStorage.toArray(new Resume[listStorage.size()]);
-        return (arr);
+        return (listStorage.toArray(new Resume[listStorage.size()]));
     }
 
     @Override
