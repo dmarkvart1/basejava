@@ -9,9 +9,9 @@ import com.urise.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected int indexElement(Resume resume) {
+    protected Object indexElement(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (resume.getUuid().equals(storage[i].getUuid())) {
+            if (uuid == storage[i].getUuid()) {
                 return i;
             }
         }
@@ -19,12 +19,12 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void delElement(int index) {
+    protected void delElement(Integer index) {
         storage[index] = storage[size - 1];
     }
 
     @Override
-    protected void saveElement(Resume resume, int index) {
+    protected void saveElement(Resume resume, Integer index) {
         storage[size] = resume;
     }
 }

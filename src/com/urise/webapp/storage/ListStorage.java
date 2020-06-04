@@ -9,8 +9,8 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> listStorage = new ArrayList<>();
 
     @Override
-    protected int indexElement(Resume index) {
-        return listStorage.indexOf(index);
+    protected Object indexElement(String uuid) {
+        return listStorage.indexOf(new Resume(uuid));
     }
 
     @Override
@@ -18,25 +18,30 @@ public class ListStorage extends AbstractStorage {
         listStorage.clear();
     }
 
-
     @Override
-    protected void saveResume(Resume resume, int index) {
+    protected void saveResume(Resume resume, Object searchKey) {
         listStorage.add(resume);
     }
 
     @Override
-    protected void updateElement(int index, Resume resume) {
-        listStorage.set(index, resume);
+    protected void updateElement(Object searchKey, Resume resume) {
+        listStorage.set((Integer) searchKey, resume);
     }
 
     @Override
-    protected Resume getElement(int index) {
-        return listStorage.get(index);
+    protected Resume getElement(Object searchKey) {
+        Resume resume = listStorage.get((Integer) searchKey);
+        return resume;
     }
 
     @Override
-    protected void delResume(int index) {
-        listStorage.remove(index);
+    protected void delResume(Object searchKey) {
+        listStorage.remove((int) searchKey);
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (Integer) searchKey >= 0;
     }
 
     @Override
