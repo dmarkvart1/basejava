@@ -6,7 +6,7 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract Object indexElement(String uuid);
+    protected abstract Object getSearchKey(String uuid);
     protected abstract void saveResume(Resume resume, Object searchKey);
     protected abstract void updateElement(Object searchKey, Resume resume);
     protected abstract Resume getElement(Object searchKey);
@@ -42,7 +42,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object notExistElement(String uuid) {
-        Object searchKey = indexElement(uuid);
+        Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
@@ -50,7 +50,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object existElement(String uuid) {
-        Object searchKey = indexElement(uuid);
+        Object searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }

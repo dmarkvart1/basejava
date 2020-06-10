@@ -19,7 +19,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object indexElement(String uuid) {
+    protected Object getSearchKey(String uuid) {
         return mapStorage.get(uuid);
     }
 

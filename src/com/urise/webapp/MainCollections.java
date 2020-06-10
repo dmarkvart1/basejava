@@ -1,6 +1,5 @@
 package com.urise.webapp;
 
-import com.sun.crypto.provider.HmacPKCS12PBESHA1;
 import com.urise.webapp.model.Resume;
 
 import java.util.*;
@@ -45,11 +44,14 @@ public class MainCollections {
         map.put(UUID_3, RESUME_3);
         map.put(UUID_4, RESUME_4);
 
-        for (String uuid : map.keySet()) {
-            System.out.println(map.get(uuid)); //не оптимальный вариант выборки данных. Так как первая операция получение резюме и вторая операция вывод информации по резюме
-        }
-        for (Map.Entry<String, Resume> entry : map.entrySet()) {
-            System.out.println(entry.getValue()); //оптимальный вариант
-        }
+//        for (String uuid : map.keySet()) {
+//            System.out.println(map.get(uuid)); //не оптимальный вариант выборки данных. Так как первая операция получение резюме и вторая операция вывод информации по резюме
+//        }
+//        for (Map.Entry<String, Resume> entry : map.entrySet()) {
+//            System.out.println(entry.getValue()); //оптимальный вариант
+//        }
+        List<Resume> resumes = Arrays.asList(RESUME_1, RESUME_2, RESUME_3);
+        resumes.remove(1);
+            System.out.println(resumes);
     }
 }

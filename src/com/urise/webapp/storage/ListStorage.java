@@ -9,7 +9,7 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> listStorage = new ArrayList<>();
 
     @Override
-    protected Object indexElement(String uuid) {
+    protected Object getSearchKey(String uuid) {
         return listStorage.indexOf(new Resume(uuid));
     }
 

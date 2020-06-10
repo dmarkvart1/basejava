@@ -2,7 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.StorageException;
 import com.urise.webapp.model.Resume;
-
 import java.util.Arrays;
 
 /**
@@ -10,8 +9,8 @@ import java.util.Arrays;
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
 
     @Override
     public void clear() {
@@ -52,7 +51,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    protected abstract void delElement(Integer index);
+    protected abstract void delElement(int index);
 
     /**
      * @return array, contains only Resumes in storage (without null)

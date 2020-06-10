@@ -6,6 +6,9 @@ import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -88,8 +91,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] array1 = storage.getAll();
+        Resume[] array1 = {RESUME_1, RESUME_2, RESUME_3};
         Resume[] array2 = storage.getAll();
+        Arrays.sort(array2, RESUME_COMPARATOR);
         assertArrayEquals(array1, array2);
     }
 
@@ -105,4 +109,11 @@ public abstract class AbstractStorageTest {
     private void assertSize(int size) {
         assertEquals(size, storage.size());
     }
+
+    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume o1, Resume o2) {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+    };
 }
