@@ -30,8 +30,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Resume getElement(Object searchKey) {
-        Resume resume = listStorage.get((Integer) searchKey);
-        return resume;
+        return listStorage.get((Integer) searchKey);
     }
 
     @Override
