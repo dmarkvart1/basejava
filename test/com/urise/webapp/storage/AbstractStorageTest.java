@@ -9,16 +9,10 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.urise.webapp.storage.SortedArrayStorage.RESUME_COMPARATOR;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
     Storage storage;
-
-    public AbstractStorageTest(Storage storage) {
-        this.storage = storage;
-    }
-
     private static final String UUID_1 = "UUID_1";
     private static final Resume RESUME_1 = new Resume(UUID_1, "Name1");
     private static final String UUID_2 = "UUID_2";
@@ -28,6 +22,9 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "UUID_4";
     private static final Resume RESUME_4 = new Resume(UUID_4, "Name4");
 
+    public AbstractStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @Before
     public void setUp() {
