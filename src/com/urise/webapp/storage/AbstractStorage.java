@@ -7,54 +7,54 @@ import com.urise.webapp.model.Resume;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
-    protected abstract Object getSearchKey(String uuid);
-    protected abstract void saveResume(Resume resume, Object searchKey);
-    protected abstract void updateElement(Object searchKey, Resume resume);
-    protected abstract Resume getElement(Object searchKey);
-    protected abstract void delResume(Object searchKey);
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract SK getSearchKey(String uuid);
+    protected abstract void saveResume(Resume resume, SK searchKey);
+    protected abstract void updateElement(SK searchKey, Resume resume);
+    protected abstract Resume getElement(SK searchKey);
+    protected abstract void delResume(SK searchKey);
+    protected abstract boolean isExist(SK searchKey);
     protected abstract List<Resume> doCopyAll();
 
     @Override
     public void save(Resume resume) {
-        Object searchKey = isExistElement(resume.getUuid());
+        SK searchKey = isExistElement(resume.getUuid());
         saveResume(resume, searchKey);
         System.out.println("Объект сохранен:" + resume.getUuid());
     }
 
     @Override
     public void update(Resume resume) {
-        Object searchKey = isNotExistElement(resume.getUuid());
+        SK searchKey = isNotExistElement(resume.getUuid());
         updateElement(searchKey, resume);
         System.out.println("Объект обновлен:" + resume.getUuid());
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = isNotExistElement(uuid);
+        SK searchKey = isNotExistElement(uuid);
         System.out.println("Объект получен:" + uuid);
         return getElement(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = isNotExistElement(uuid);
+        SK searchKey = isNotExistElement(uuid);
         delResume(searchKey);
         System.out.println("Объект удален:" + uuid);
     }
 
-    private Object isNotExistElement(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private SK isNotExistElement(String uuid) {
+        SK searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    private Object isExistElement(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private SK isExistElement(String uuid) {
+        SK searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new ExistStorageException(uuid);
         }
