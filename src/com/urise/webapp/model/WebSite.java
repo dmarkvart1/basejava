@@ -3,26 +3,25 @@ package com.urise.webapp.model;
 import java.util.Objects;
 
 public class WebSite {
-    public String site;
-    public String nameFirmaOrEdu;
+    public String url;
+    public String nameOrganisation;
 
-    public WebSite(String site, String nameFirmaOrEdu) {
-        Objects.requireNonNull(nameFirmaOrEdu, "webSite must not be null");
-        this.site=site;
-        this.nameFirmaOrEdu=nameFirmaOrEdu;
+    public WebSite(String url, String nameOrganisation) {
+        this.url = url;
+        this.nameOrganisation = nameOrganisation;
     }
 
-    public String getSite() {
-        return site;
+    public String getUrl() {
+        return url;
     }
 
-    public String getNameFirmaOrEdu() {
-        return nameFirmaOrEdu;
+    public String getNameOrganisation() {
+        return nameOrganisation;
     }
 
     @Override
     public String toString() {
-        return "Site:" + nameFirmaOrEdu + ',' + site + ')';
+        return "Site:" + nameOrganisation + ',' + url + ')';
     }
 
     @Override
@@ -32,14 +31,14 @@ public class WebSite {
 
         WebSite webSite = (WebSite) o;
 
-        if (!Objects.equals(site, webSite.site)) return false;
-        return nameFirmaOrEdu.equals(webSite.nameFirmaOrEdu);
+        if (!Objects.equals(url, webSite.url)) return false;
+        return nameOrganisation.equals(webSite.nameOrganisation);
     }
 
     @Override
     public int hashCode() {
-        int result = site != null ? site.hashCode() : 0;
-        result = 31 * result + nameFirmaOrEdu.hashCode();
+        int result = url != null ? url.hashCode() : 0;
+        result = 31 * result + nameOrganisation.hashCode();
         return result;
     }
 }

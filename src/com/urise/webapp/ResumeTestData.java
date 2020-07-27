@@ -24,37 +24,37 @@ public class ResumeTestData {
     private static final YearMonth date4 = YearMonth.of(2013, Month.APRIL);
 
     static {
-        RESUME_1.addContact(ContactInfoSection.EMAIL, "moyemail@mail.ru");
-        RESUME_1.addContact(ContactInfoSection.PHONE, "111324134134111");
+        RESUME_1.addContact(ContactType.EMAIL, "moyemail@mail.ru");
+        RESUME_1.addContact(ContactType.PHONE, "111324134134111");
         RESUME_1.addSection(SectionType.OBJECTIVE, new TextContentSection("Programming"));
         RESUME_1.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe"));
         RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Achivment1", "Achivment2", "Achivment3", "Achivment4"));
         RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
-        RESUME_1.addSection(SectionType.EXPERIENCE, new ExperienceEducationSection("http://www.mail.ru",
+        RESUME_1.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
                 "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
-        RESUME_1.addSection(SectionType.EDUCATION, new ExperienceEducationSection("http://www.yandex.ru", "Politech",
+        RESUME_1.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
                         date3, date4, "aspirant", "StudentInfo"));
 
-        RESUME_2.addContact(ContactInfoSection.EMAIL, "moyemail@mail.ru");
-        RESUME_2.addContact(ContactInfoSection.PHONE, "111324134134111");
+        RESUME_2.addContact(ContactType.EMAIL, "moyemail@mail.ru");
+        RESUME_2.addContact(ContactType.PHONE, "111324134134111");
         RESUME_2.addSection(SectionType.OBJECTIVE, new TextContentSection("Programming"));
         RESUME_2.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe"));
         RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Achivment1", "Achivment2", "Achivment3", "Achivment4"));
         RESUME_2.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
-        RESUME_2.addSection(SectionType.EXPERIENCE, new ExperienceEducationSection("http://www.mail.ru",
+        RESUME_2.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
                 "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
-        RESUME_2.addSection(SectionType.EDUCATION, new ExperienceEducationSection("http://www.yandex.ru", "Politech",
+        RESUME_2.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
                         date3, date4, "aspirant", "StudentInfo"));
 
-        RESUME_3.addContact(ContactInfoSection.EMAIL, "moyemail@mail.ru");
-        RESUME_3.addContact(ContactInfoSection.PHONE, "111324134134111");
+        RESUME_3.addContact(ContactType.EMAIL, "moyemail@mail.ru");
+        RESUME_3.addContact(ContactType.PHONE, "111324134134111");
         RESUME_3.addSection(SectionType.OBJECTIVE, new TextContentSection("Programming"));
         RESUME_3.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe"));
         RESUME_3.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Achivment1", "Achivment2", "Achivment3", "Achivment4"));
         RESUME_3.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
-        RESUME_3.addSection(SectionType.EXPERIENCE, new ExperienceEducationSection("http://www.mail.ru",
+        RESUME_3.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
                 "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
-        RESUME_3.addSection(SectionType.EDUCATION, new ExperienceEducationSection("http://www.yandex.ru", "Politech",
+        RESUME_3.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
                 date3, date4, "aspirant", "StudentInfo"));
     }
 

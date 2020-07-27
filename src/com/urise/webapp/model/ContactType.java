@@ -1,8 +1,6 @@
 package com.urise.webapp.model;
 
-import java.util.Objects;
-
-public enum  ContactInfoSection {
+public enum ContactType {
     ADDRESS("Адрес"),
     PHONE("Телефон"),
     MOBILE("Мобильный"),
@@ -12,7 +10,7 @@ public enum  ContactInfoSection {
 
     private String title;
 
-    ContactInfoSection(String title) {
+    ContactType(String title) {
         this.title = title;
     }
 

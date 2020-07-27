@@ -1,12 +1,9 @@
 package com.urise.webapp.model;
 
-import java.util.Objects;
-
 public class TextContentSection extends AbstractSection {
     private final String content;
 
     public TextContentSection(String content) {
-        Objects.requireNonNull(content, "content must not be null");
         this.content = content;
     }
 
