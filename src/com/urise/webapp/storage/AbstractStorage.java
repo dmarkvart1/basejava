@@ -29,7 +29,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public void save(Resume resume) {
         LOG.info("Save" + resume);
-        SK searchKey = isExistElement(resume.getUuid());
+        SK searchKey = getSearchKeyIfNotExist(resume.getUuid());
         saveResume(resume, searchKey);
         System.out.println("Объект сохранен:" + resume.getUuid());
     }
@@ -37,7 +37,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public void update(Resume resume) {
         LOG.info("Update" + resume);
-        SK searchKey = isNotExistElement(resume.getUuid());
+        SK searchKey = getSearchKeyIfExist(resume.getUuid());
         updateElement(searchKey, resume);
         System.out.println("Объект обновлен:" + resume.getUuid());
     }
@@ -45,7 +45,7 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public Resume get(String uuid) {
         LOG.info("Get" + uuid);
-        SK searchKey = isNotExistElement(uuid);
+        SK searchKey = getSearchKeyIfExist(uuid);
         System.out.println("Объект получен:" + uuid);
         return getElement(searchKey);
     }
@@ -53,12 +53,12 @@ public abstract class AbstractStorage<SK> implements Storage {
     @Override
     public void delete(String uuid) {
         LOG.info("Delete" + uuid);
-        SK searchKey = isNotExistElement(uuid);
+        SK searchKey = getSearchKeyIfExist(uuid);
         delResume(searchKey);
         System.out.println("Объект удален:" + uuid);
     }
 
-    private SK isNotExistElement(String uuid) {
+    private SK getSearchKeyIfExist(String uuid) {
         SK searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             LOG.warning("Resume " + uuid + " not exist");
@@ -67,7 +67,7 @@ public abstract class AbstractStorage<SK> implements Storage {
         return searchKey;
     }
 
-    private SK isExistElement(String uuid) {
+    private SK getSearchKeyIfNotExist(String uuid) {
         SK searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             LOG.warning("Resume " + uuid + " already exist");

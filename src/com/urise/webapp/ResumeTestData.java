@@ -1,5 +1,6 @@
 package com.urise.webapp;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.urise.webapp.model.*;
 import com.urise.webapp.storage.ListStorage;
 import com.urise.webapp.storage.Storage;
@@ -10,6 +11,24 @@ import java.time.YearMonth;
 
 
 public class ResumeTestData {
+    public static void main(String[] args) {
+        Storage storage = new ListStorage();
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
+
+        System.out.println(RESUME_1.getFullName());
+
+        for (ContactType elem : ContactType.values()) {
+            if (RESUME_1.getContacts(ContactType.valueOf(elem.name())) != null) {
+                System.out.println(elem.getTitle() + RESUME_1.getContacts(ContactType.valueOf(elem.name())));
+            }
+        }
+
+        for (SectionType elem : SectionType.values()) {
+            System.out.println(elem.getTitle() + RESUME_1.getSections(SectionType.valueOf(elem.name())));
+        }
+    }
 
     private static final String UUID_1 = "UUID_1";
     private static final String UUID_2 = "UUID_2";
@@ -33,7 +52,7 @@ public class ResumeTestData {
         RESUME_1.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
                 "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
         RESUME_1.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
-                        date3, date4, "aspirant", "StudentInfo"));
+                date3, date4, "aspirant", "StudentInfo"));
 
         RESUME_2.addContact(ContactType.EMAIL, "moyemail@mail.ru");
         RESUME_2.addContact(ContactType.PHONE, "111324134134111");
@@ -44,7 +63,7 @@ public class ResumeTestData {
         RESUME_2.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
                 "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
         RESUME_2.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
-                        date3, date4, "aspirant", "StudentInfo"));
+                date3, date4, "aspirant", "StudentInfo"));
 
         RESUME_3.addContact(ContactType.EMAIL, "moyemail@mail.ru");
         RESUME_3.addContact(ContactType.PHONE, "111324134134111");
@@ -56,12 +75,5 @@ public class ResumeTestData {
                 "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
         RESUME_3.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
                 date3, date4, "aspirant", "StudentInfo"));
-    }
-
-    public static void main(String[] args) {
-        Storage storage = new ListStorage();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
-        storage.save(RESUME_3);
     }
 }

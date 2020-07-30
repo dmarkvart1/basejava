@@ -27,6 +27,10 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     public String getContacts(ContactType type) {
         return contacts.get(type);
     }
