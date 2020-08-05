@@ -7,6 +7,7 @@ public class WebSite {
     public String nameOrganisation;
 
     public WebSite(String url, String nameOrganisation) {
+        Objects.requireNonNull(nameOrganisation, "nameOrganisation must not be null");
         this.url = url;
         this.nameOrganisation = nameOrganisation;
     }
@@ -21,7 +22,7 @@ public class WebSite {
 
     @Override
     public String toString() {
-        return "Site:" + nameOrganisation + ',' + url + ')';
+        return "Organisation:" + nameOrganisation + ',' + url + ')';
     }
 
     @Override

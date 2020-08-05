@@ -11,69 +11,33 @@ import java.time.YearMonth;
 
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Storage storage = new ListStorage();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
-        storage.save(RESUME_3);
-
-        System.out.println(RESUME_1.getFullName());
-
-        for (ContactType elem : ContactType.values()) {
-            if (RESUME_1.getContacts(ContactType.valueOf(elem.name())) != null) {
-                System.out.println(elem.getTitle() + RESUME_1.getContacts(ContactType.valueOf(elem.name())));
-            }
-        }
-
-        for (SectionType elem : SectionType.values()) {
-            System.out.println(elem.getTitle() + RESUME_1.getSections(SectionType.valueOf(elem.name())));
-        }
-    }
-
-    private static final String UUID_1 = "UUID_1";
-    private static final String UUID_2 = "UUID_2";
-    private static final String UUID_3 = "UUID_3";
-
-    private static final Resume RESUME_1 = new Resume(UUID_1, "Name1");
-    private static final Resume RESUME_2 = new Resume(UUID_2, "Name2");
-    private static final Resume RESUME_3 = new Resume(UUID_3, "Name3");
     private static final YearMonth date1 = YearMonth.of(2010, Month.FEBRUARY);
     private static final YearMonth date2 = YearMonth.of(2011, Month.MARCH);
     private static final YearMonth date3 = YearMonth.of(2012, Month.AUGUST);
     private static final YearMonth date4 = YearMonth.of(2013, Month.APRIL);
+    private static final YearMonth date5 = YearMonth.of(2014, Month.JULY);
+    private static final YearMonth date6 = YearMonth.of(2015, Month.SEPTEMBER);
 
-    static {
-        RESUME_1.addContact(ContactType.EMAIL, "moyemail@mail.ru");
-        RESUME_1.addContact(ContactType.PHONE, "111324134134111");
-        RESUME_1.addSection(SectionType.OBJECTIVE, new TextContentSection("Programming"));
-        RESUME_1.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe"));
-        RESUME_1.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Achivment1", "Achivment2", "Achivment3", "Achivment4"));
-        RESUME_1.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
-        RESUME_1.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
-                "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
-        RESUME_1.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
-                date3, date4, "aspirant", "StudentInfo"));
 
-        RESUME_2.addContact(ContactType.EMAIL, "moyemail@mail.ru");
-        RESUME_2.addContact(ContactType.PHONE, "111324134134111");
-        RESUME_2.addSection(SectionType.OBJECTIVE, new TextContentSection("Programming"));
-        RESUME_2.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe"));
-        RESUME_2.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Achivment1", "Achivment2", "Achivment3", "Achivment4"));
-        RESUME_2.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
-        RESUME_2.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
-                "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
-        RESUME_2.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
-                date3, date4, "aspirant", "StudentInfo"));
+    public static Resume createResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
+        resume.addContact(ContactType.EMAIL, "moyemail@mail.ru");
+        resume.addContact(ContactType.PHONE, "111324134134111");
+        resume.addSection(SectionType.OBJECTIVE, new TextContentSection("Programmer"));
+        resume.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe1"));
+        resume.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Достижение1", "Achivment2", "Achivment3", "Achivment4"));
+        resume.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
+        resume.addSection(SectionType.EXPERIENCE,
+                new ExperienceSection(
+                        new Experience("http://www.yandex.ru", "NewAgeTechnologies",
+                                new Experience.Position(date1, date2, "position1", "content1"),
+                                new Experience.Position(date3, date6, "position2", "content2"))));
 
-        RESUME_3.addContact(ContactType.EMAIL, "moyemail@mail.ru");
-        RESUME_3.addContact(ContactType.PHONE, "111324134134111");
-        RESUME_3.addSection(SectionType.OBJECTIVE, new TextContentSection("Programming"));
-        RESUME_3.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe"));
-        RESUME_3.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Achivment1", "Achivment2", "Achivment3", "Achivment4"));
-        RESUME_3.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
-        RESUME_3.addSection(SectionType.EXPERIENCE, new Experience("http://www.mail.ru",
-                "Organization11", date1, date2, "InnoForce", "DescriptionInfo"));
-        RESUME_3.addSection(SectionType.EDUCATION, new Experience("http://www.yandex.ru", "Politech",
-                date3, date4, "aspirant", "StudentInfo"));
+        resume.addSection(SectionType.EDUCATION,
+                new ExperienceSection(
+                        new Experience("http://www.yandex.ru", "Yandex",
+                                new Experience.Position(date1, date5, "Student", "content1"),
+                                new Experience.Position(date3, date4, "Aspirant", "content2"))));
+        return resume;
     }
 }
