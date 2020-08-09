@@ -1,21 +1,23 @@
 package com.urise.webapp.model;
 
-import java.time.Month;
+import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Experience {
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final WebSite webSite;
     private List<Position> positions = new ArrayList<>();
 
-    public Experience(String url, String name, Position... positions) {
+    public Organization(String url, String name, Position... positions) {
         this(new WebSite(url, name), Arrays.asList(positions));
     }
 
-    public Experience(WebSite url, List<Position> positions) {
+    public Organization(WebSite url, List<Position> positions) {
         this.webSite = url;
         this.positions = positions;
     }
@@ -24,7 +26,7 @@ public class Experience {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Experience that = (Experience) o;
+        Organization that = (Organization) o;
         return Objects.equals(webSite, that.webSite) &&
                 Objects.equals(positions, that.positions);
     }
@@ -39,7 +41,7 @@ public class Experience {
         return "Organization(" + webSite + "," + positions + ')';
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
         private final YearMonth from;
         private final YearMonth to;
         private final String position;
