@@ -20,10 +20,10 @@ public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File("D:\\test\\basejava\\storage");
     protected Storage storage;
 
-    private static Resume RESUME_1 = ResumeTestData.createResume("1001", "Ivan Petrovich");
-    private static Resume RESUME_2 = ResumeTestData.createResume("1002", "Alexandr Alexandrov");
-    private static Resume RESUME_3 = ResumeTestData.createResume("1003", "Fedor Pavlovich");
-    private static Resume RESUME_4 = ResumeTestData.createResume("1004", "Vadim Nikolaevich");
+    private  Resume RESUME_1 = ResumeTestData.createResume("1001", "Ivan Petrovich");
+    private  Resume RESUME_2 = ResumeTestData.createResume("1002", "Alexandr Alexandrov");
+    private  Resume RESUME_3 = ResumeTestData.createResume("1003", "Fedor Pavlovich");
+    private  Resume RESUME_4 = ResumeTestData.createResume("1004", "Vadim Nikolaevich");
 
     @Before
     public void setUp() {
