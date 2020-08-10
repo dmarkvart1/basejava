@@ -1,7 +1,5 @@
 package com.urise.webapp.model;
 
-import sun.swing.SwingUtilities2;
-
 import java.io.Serializable;
 import java.util.*;
 
