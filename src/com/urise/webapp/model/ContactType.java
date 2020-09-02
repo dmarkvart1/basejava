@@ -6,7 +6,7 @@ public enum ContactType {
     MOBILE("Мобильный: "),
     EMAIL("Эл.почта: "),
     SKYPE("Skype: "),
-    SITE("Домашняя страница: ");
+    SITE("Homepage: ");
 
     private String title;
 
