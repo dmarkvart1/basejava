@@ -13,7 +13,6 @@ public class ObjectStreamSerializer implements StreamSerializer {
 
         }
     }
-
     @Override
     public Resume doRead(InputStream inputStream) throws IOException {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {

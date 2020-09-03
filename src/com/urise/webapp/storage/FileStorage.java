@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class FileStorage extends AbstractStorage<File> {
-    private File directory;
-    private StreamSerializer streamSerializer;
+    private final File directory;
+    private final StreamSerializer streamSerializer;
 
     protected FileStorage(File directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -24,6 +24,18 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + "is not readable/writable");
         }
         this.directory = directory;
+    }
+
+    @Override
+    public void clear() {
+        for (File file : getFileList()) {
+            delResume(file);
+        }
+    }
+
+    @Override
+    public int size() {
+        return getFileList().length;
     }
 
     @Override
@@ -73,10 +85,7 @@ public class FileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("Directory read error");
-        }
+       File[] files =  getFileList();
         List<Resume> list = new ArrayList<>(files.length);
         for (File file : files) {
             list.add(getElement(file));
@@ -84,22 +93,10 @@ public class FileStorage extends AbstractStorage<File> {
         return list;
     }
 
-    @Override
-    public void clear() {
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                delResume(file);
-            }
-        }
-    }
-
-    @Override
-    public int size() {
-        String[] list = directory.list();
-        if (list == null) {
+    private File[] getFileList() {
+        if (directory.listFiles() == null) {
             throw new StorageException("Directory read error");
         }
-        return list.length;
+        return directory.listFiles();
     }
 }
