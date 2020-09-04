@@ -1,16 +1,28 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.DateAdapter;
+import com.urise.webapp.util.DateUtil;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final WebSite webSite;
+    private WebSite webSite;
     private List<Position> positions;
+
+    public Organization() {
+    }
 
     public Organization(String url, String name, Position... positions) {
         this(new WebSite(url, name), Arrays.asList(positions));
@@ -40,12 +52,18 @@ public class Organization implements Serializable {
         return "Organization(" + webSite + "," + positions + ')';
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlRootElement(name = "positions")
     public static class Position implements Serializable {
-        private final YearMonth from;
-        private final YearMonth to;
-        private final String title;
-        private final String description;
+        @XmlJavaTypeAdapter(DateAdapter.class)
+        private YearMonth from;
+        @XmlJavaTypeAdapter(DateAdapter.class)
+        private YearMonth to;
+        private String title;
+        private String description;
 
+        public Position() {
+        }
 
         public Position(YearMonth from, YearMonth to, String title, String description) {
             Objects.requireNonNull(from, "startDate must not be null");

@@ -98,7 +98,6 @@ public class PathStorage extends AbstractStorage<Path> {
         return path.getFileName().toString();
     }
 
-
     private Stream<Path> getFileList() {
         try {
             return Files.list(directory);

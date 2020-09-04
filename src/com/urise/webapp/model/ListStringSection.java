@@ -1,5 +1,7 @@
 package com.urise.webapp.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -7,7 +9,10 @@ import java.util.Objects;
 public class ListStringSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private final List<String> lists;
+    private List<String> lists;
+
+    public ListStringSection() {
+    }
 
     public ListStringSection(String... lists) {
         this(Arrays.asList(lists));
