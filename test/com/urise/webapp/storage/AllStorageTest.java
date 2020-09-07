@@ -14,6 +14,9 @@ import java.io.ObjectOutputStream;
         MapResumeStorageTest.class,
         ObjectPathStorageTest.class,
         ObjectFileStorageTest.class,
+        XmlPathStorageTest.class,
+        JsonPathStorageTest.class,
+        DataPathStorageTest.class,
 })
 
 public class AllStorageTest {
