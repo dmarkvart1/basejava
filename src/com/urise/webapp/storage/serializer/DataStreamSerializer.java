@@ -38,34 +38,30 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(streamReader.readUTF()),
                         streamReader.readUTF());
             }
-            String[] myArray = {"PERSONAL", "OBJECTIVE", "ACHIEVEMENT", "QUALIFICATIONS", "EXPERIENCE", "EDUCATION"};
             int size2 = streamReader.readInt();
             for (int i = 0; i < size2; i++) {
-//                SectionRequest sectionRequest = new SectionRequest() {
-//                    public SectionType sectionRequest(SectionType type) {
-//                        if(type.equals("PERSONAL")) {
-//                        }
-//                        return null;
-//                    }
-//                };
+
                 SectionType sectionType = SectionType.valueOf(streamReader.readUTF());
-                if (sectionType.name().equals(myArray[0]) || (sectionType.name().equals(myArray[1]))) {
-                    TextContentSection contentSection = new TextContentSection(streamReader.readUTF());
-                    resume.addSection(sectionType, contentSection);
-                    continue;
-                }
-                if (sectionType.name().equals(myArray[2]) || (sectionType.name().equals(myArray[3]))) {
-                    ListStringSection contentSection = new ListStringSection(streamReader.readUTF());
-                    resume.addSection(sectionType, contentSection);
-                    continue;
-                } if (sectionType.name().equals(myArray[4]) || (sectionType.name().equals(myArray[5]))){
-                    OrganizationSection contentSection = new OrganizationSection(streamReader.readUTF());
-                    resume.addSection(sectionType, contentSection);
+                switch (sectionType) {
+                    case OBJECTIVE:
+                    case PERSONAL:
+                        TextContentSection contentSection1 = new TextContentSection(streamReader.readUTF());
+                        resume.addSection(sectionType, contentSection1);
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        ListStringSection contentSection2 = new ListStringSection(streamReader.readUTF());
+                        resume.addSection(sectionType, contentSection2);
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        OrganizationSection contentSection3 = new OrganizationSection(streamReader.readUTF());
+                        resume.addSection(sectionType, contentSection3);
+                        break;
                 }
             }
-            return  resume;
+            return resume;
         }
-
     }
 }
 
@@ -74,4 +70,3 @@ public class DataStreamSerializer implements StreamSerializer {
 //         return null;
 //     }
 //}
-
