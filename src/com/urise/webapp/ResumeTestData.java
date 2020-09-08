@@ -24,6 +24,7 @@ public class ResumeTestData {
         resume.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe1"));
         resume.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Достижение1", "Achivment2", "Achivment3", "Achivment4"));
         resume.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
+
         resume.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("http://www.nat.ru", "NewAgeTechnologies",

@@ -13,12 +13,12 @@ public class DataStreamSerializer implements StreamSerializer {
             streamWriter.writeUTF(resume.getUuid());
             streamWriter.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            Map<SectionType, AbstractSection> sectionType = resume.getSections();
             streamWriter.writeInt(contacts.size());
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 streamWriter.writeUTF(entry.getKey().name());
                 streamWriter.writeUTF(entry.getValue());
             }
+            Map<SectionType, AbstractSection> sectionType = resume.getSections();
             streamWriter.writeInt(sectionType.size());
             for (Map.Entry<SectionType, AbstractSection> entry : sectionType.entrySet()) {
                 streamWriter.writeUTF(entry.getKey().name());
