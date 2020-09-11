@@ -1,6 +1,7 @@
 package com.urise.webapp.model;
 
 import com.urise.webapp.util.DateAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,6 +29,14 @@ public class Organization implements Serializable {
     public Organization(WebSite url, List<Position> positions) {
         this.webSite = url;
         this.positions = positions;
+    }
+
+    public WebSite getWebSite() {
+        return webSite;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
     }
 
     @Override
@@ -60,6 +69,22 @@ public class Organization implements Serializable {
         private String description;
 
         public Position() {
+        }
+
+        public YearMonth getFrom() {
+            return from;
+        }
+
+        public YearMonth getTo() {
+            return to;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         public Position(YearMonth from, YearMonth to, String title, String description) {

@@ -29,13 +29,33 @@ public class ResumeTestData {
                 new OrganizationSection(
                         new Organization("http://www.nat.ru", "NewAgeTechnologies",
                                 new Organization.Position(date1, date2, "position1", "content1"),
-                                new Organization.Position(date3, date6, "position2", "content2"))));
+                                new Organization.Position(date1, date2, "position2", "content2"),
+                                new Organization.Position(date3, date6, "position3", "content3"))));
+        resume.addSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("http://www.nat.ru", "NewAgeTechnologies",
+                                new Organization.Position(date1, date2, "position1", "content1"),
+                                new Organization.Position(date1, date2, "position2", "content2"),
+                                new Organization.Position(date3, date6, "position3", "content3"))));
 
         resume.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("http://www.yandex.ru", "Yandex",
-                                new Organization.Position(date1, date5, "Student", "content1"),
-                                new Organization.Position(date3, date4, "Aspirant", "content2"))));
+                                new Organization.Position(date1, date5, "Student1", "content1"),
+                                new Organization.Position(date1, date5, "Student2", "content2"),
+                                new Organization.Position(date3, date4, "Aspirant3", "content3"))));
+        resume.addSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("http://www.yandex.ru", "Yandex",
+                                new Organization.Position(date1, date5, "Student1", "content1"),
+                                new Organization.Position(date1, date5, "Student2", "content2"),
+                                new Organization.Position(date3, date4, "Aspirant3", "content3"))));
+        resume.addSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("http://www.yandex.ru", "Yandex",
+                                new Organization.Position(date1, date5, "Student1", "content1"),
+                                new Organization.Position(date1, date5, "Student2", "content2"),
+                                new Organization.Position(date3, date4, "Aspirant3", "content3"))));
         return resume;
     }
 }

@@ -25,6 +25,10 @@ public class ListStringSection extends AbstractSection {
         return lists;
     }
 
+    public void setLists(List<String> lists) {
+        this.lists = lists;
+    }
+
     @Override
     public String toString() {
         return  lists.toString();
