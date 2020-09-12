@@ -21,13 +21,6 @@ public class WebSite implements Serializable {
         this.nameOrganisation = nameOrganisation;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public String getNameOrganisation() {
-        return nameOrganisation;
-    }
 
     @Override
     public String toString() {
