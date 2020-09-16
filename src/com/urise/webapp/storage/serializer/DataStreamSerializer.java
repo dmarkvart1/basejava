@@ -47,15 +47,9 @@ public class DataStreamSerializer implements StreamSerializer {
                             streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().nameOrganisation));
                         }
                         streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().url));
-                        streamWriter.writeInt(organizationList.get(0).getPositions().size());
+                       // streamWriter.writeInt(organizationList.get(0).getPositions().size());
 
-//                        writeDate(streamWriter, organizationList.get(0).getPositions(), positions -> {
-//                            streamWriter.writeUTF(valueOf(positions.getFrom()));
-//                            streamWriter.writeUTF(valueOf(positions.getTo()));
-//                            streamWriter.writeUTF(valueOf(positions.getTitle()));
-//                        });
-
-                        for (Position positions : organizationList.get(0).getPositions()) {
+                        writeDate(streamWriter, organizationList.get(0).getPositions(), positions -> {
                             streamWriter.writeUTF(valueOf(positions.getFrom()));
                             streamWriter.writeUTF(valueOf(positions.getTo()));
                             streamWriter.writeUTF(valueOf(positions.getTitle()));
@@ -64,7 +58,7 @@ public class DataStreamSerializer implements StreamSerializer {
                             } else {
                                 streamWriter.writeUTF(valueOf(positions.getDescription()));
                             }
-                        }
+                });
                 }
             });
         }
