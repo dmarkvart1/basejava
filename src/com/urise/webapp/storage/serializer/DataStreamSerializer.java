@@ -1,45 +1,41 @@
 package com.urise.webapp.storage.serializer;
 
 import com.urise.webapp.model.*;
+import com.urise.webapp.model.Organization.Position;
 
 import java.io.*;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import static java.lang.String.*;
+
 
 public class DataStreamSerializer implements StreamSerializer {
-
     @Override
     public void doWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (DataOutputStream streamWriter = new DataOutputStream(outputStream)) {
             streamWriter.writeUTF(resume.getUuid());
             streamWriter.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            streamWriter.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+            writeDate(streamWriter, contacts.entrySet(), entry -> {
                 streamWriter.writeUTF(entry.getKey().name());
                 streamWriter.writeUTF(entry.getValue());
-            }
+            });
 
             Map<SectionType, AbstractSection> sections = resume.getSections();
-            streamWriter.writeInt(sections.size());
-            for (Map.Entry<SectionType, AbstractSection> entry : sections.entrySet()) {
+            writeDate(streamWriter, sections.entrySet(), entry -> {
                 SectionType nameSection = SectionType.valueOf(entry.getKey().name());
-                streamWriter.writeUTF(String.valueOf(nameSection));
+                streamWriter.writeUTF(valueOf(nameSection));
                 switch (nameSection) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        streamWriter.writeUTF(String.valueOf(entry.getValue()));
+                        streamWriter.writeUTF(valueOf(entry.getValue()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         ListStringSection stringSection = (ListStringSection) entry.getValue();
-                        streamWriter.writeInt(stringSection.getLists().size());
-
-                        for (String section : stringSection.getLists()) {
-                            streamWriter.writeUTF(String.valueOf(section));
-                        }
+                        writeDate(streamWriter, stringSection.getLists(), section -> {
+                            streamWriter.writeUTF(valueOf(section.intern()));
+                        });
                         break;
 
                     default:
@@ -48,25 +44,29 @@ public class DataStreamSerializer implements StreamSerializer {
                         if (organizationList.get(0).getWebSite().nameOrganisation == null) {
                             streamWriter.writeUTF("null");
                         } else {
-                            streamWriter.writeUTF(String.valueOf(organizationList.get(0).getWebSite().nameOrganisation));
+                            streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().nameOrganisation));
                         }
-                        streamWriter.writeUTF(String.valueOf(organizationList.get(0).getWebSite().url));
-
+                        streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().url));
                         streamWriter.writeInt(organizationList.get(0).getPositions().size());
-                        for (Organization.Position positions : organizationList.get(0).getPositions()) {
-                            streamWriter.writeUTF(String.valueOf(positions.getFrom()));
-                            streamWriter.writeUTF(String.valueOf(positions.getTo()));
-                            streamWriter.writeUTF(String.valueOf(positions.getTitle()));
 
+//                        writeDate(streamWriter, organizationList.get(0).getPositions(), positions -> {
+//                            streamWriter.writeUTF(valueOf(positions.getFrom()));
+//                            streamWriter.writeUTF(valueOf(positions.getTo()));
+//                            streamWriter.writeUTF(valueOf(positions.getTitle()));
+//                        });
+
+                        for (Position positions : organizationList.get(0).getPositions()) {
+                            streamWriter.writeUTF(valueOf(positions.getFrom()));
+                            streamWriter.writeUTF(valueOf(positions.getTo()));
+                            streamWriter.writeUTF(valueOf(positions.getTitle()));
                             if (positions.getDescription() == null) {
                                 streamWriter.writeUTF("null");
                             } else {
-                                streamWriter.writeUTF(String.valueOf(positions.getDescription()));
+                                streamWriter.writeUTF(valueOf(positions.getDescription()));
                             }
-
                         }
                 }
-            }
+            });
         }
     }
 
@@ -106,10 +106,10 @@ public class DataStreamSerializer implements StreamSerializer {
                         OrganizationSection organizationSection = new OrganizationSection();
 
                         List<Organization> organizations = new ArrayList<>();
-                        List<Organization.Position> positions = new ArrayList<>();
+                        List<Position> positions = new ArrayList<>();
                         String nameOrganisation = streamReader.readUTF();
                         String url = streamReader.readUTF();
-                        if(url.equals("null")){
+                        if (url.equals("null")) {
                             url = null;
                         }
                         int listFromTo = streamReader.readInt();
@@ -119,10 +119,10 @@ public class DataStreamSerializer implements StreamSerializer {
                             YearMonth to = YearMonth.parse(streamReader.readUTF());
                             String title = streamReader.readUTF();
                             String description = streamReader.readUTF();
-                            if (description.equals("null")){
+                            if (description.equals("null")) {
                                 description = null;
                             }
-                            positions.add(new Organization.Position(from, to, title, description));
+                            positions.add(new Position(from, to, title, description));
                         }
                         Organization organization = new Organization(webSite, positions);
                         organizations.add(organization);
@@ -132,6 +132,17 @@ public class DataStreamSerializer implements StreamSerializer {
                 }
             }
             return resume;
+        }
+    }
+
+    private interface WriteWithException<T> {
+        void write(T elem) throws IOException;
+    }
+
+    private <T> void writeDate(DataOutputStream dos, Collection<T> collection, WriteWithException<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T elem : collection) {
+            writer.write(elem);
         }
     }
 }
