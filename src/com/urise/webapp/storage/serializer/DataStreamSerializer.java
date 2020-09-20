@@ -6,6 +6,7 @@ import com.urise.webapp.model.Organization.Position;
 import java.io.*;
 import java.time.YearMonth;
 import java.util.*;
+
 import static java.lang.String.*;
 
 
@@ -16,13 +17,13 @@ public class DataStreamSerializer implements StreamSerializer {
             streamWriter.writeUTF(resume.getUuid());
             streamWriter.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            writeDate(streamWriter, contacts.entrySet(), entry -> {
+            writeWithException(streamWriter, contacts.entrySet(), entry -> {
                 streamWriter.writeUTF(entry.getKey().name());
                 streamWriter.writeUTF(entry.getValue());
             });
 
             Map<SectionType, AbstractSection> sections = resume.getSections();
-            writeDate(streamWriter, sections.entrySet(), entry -> {
+            writeWithException(streamWriter, sections.entrySet(), entry -> {
                 SectionType nameSection = SectionType.valueOf(entry.getKey().name());
                 streamWriter.writeUTF(valueOf(nameSection));
                 switch (nameSection) {
@@ -33,11 +34,9 @@ public class DataStreamSerializer implements StreamSerializer {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         ListStringSection stringSection = (ListStringSection) entry.getValue();
-                        writeDate(streamWriter, stringSection.getLists(), section -> {
-                            streamWriter.writeUTF(valueOf(section.intern()));
-                        });
+                        writeWithException(streamWriter, stringSection.getLists(), section ->
+                                streamWriter.writeUTF((section.intern())));
                         break;
-
                     default:
                         OrganizationSection organizationSectionList = ((OrganizationSection) entry.getValue());
                         List<Organization> organizationList = organizationSectionList.getOrganizationList();
@@ -47,9 +46,8 @@ public class DataStreamSerializer implements StreamSerializer {
                             streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().nameOrganisation));
                         }
                         streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().url));
-                       // streamWriter.writeInt(organizationList.get(0).getPositions().size());
 
-                        writeDate(streamWriter, organizationList.get(0).getPositions(), positions -> {
+                        writeWithException(streamWriter, organizationList.get(0).getPositions(), positions -> {
                             streamWriter.writeUTF(valueOf(positions.getFrom()));
                             streamWriter.writeUTF(valueOf(positions.getTo()));
                             streamWriter.writeUTF(valueOf(positions.getTitle()));
@@ -70,16 +68,11 @@ public class DataStreamSerializer implements StreamSerializer {
             String uuid = streamReader.readUTF();
             String fullName = streamReader.readUTF();
 
-
             Resume resume = new Resume(uuid, fullName);
-            int contactsSize = streamReader.readInt();
-            for (int i = 0; i < contactsSize; i++) {
-                resume.addContact(ContactType.valueOf(streamReader.readUTF()),
-                        streamReader.readUTF());
-            }
-            int sectionsSize = streamReader.readInt();
-            for (int i = 0; i < sectionsSize; i++) {
+            readElement(streamReader, () -> resume.addContact(ContactType.valueOf(streamReader.readUTF()),
+                    streamReader.readUTF()));
 
+            readElement(streamReader, () -> {
                 SectionType sections = SectionType.valueOf(streamReader.readUTF());
                 switch (sections) {
                     case OBJECTIVE:
@@ -89,11 +82,8 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        int listSize = streamReader.readInt();
                         List<String> list = new ArrayList<>();
-                        for (int q = 0; q < listSize; q++) {
-                            list.add(streamReader.readUTF());
-                        }
+                        readElement(streamReader, () -> list.add(streamReader.readUTF()));
                         resume.addSection(sections, new ListStringSection(list));
                         break;
                     default:
@@ -103,40 +93,46 @@ public class DataStreamSerializer implements StreamSerializer {
                         List<Position> positions = new ArrayList<>();
                         String nameOrganisation = streamReader.readUTF();
                         String url = streamReader.readUTF();
-                        if (url.equals("null")) {
-                            url = null;
-                        }
-                        int listFromTo = streamReader.readInt();
+                        url = url.equals("null") ? null : url;
                         WebSite webSite = new WebSite(url, nameOrganisation);
-                        for (int j = 0; j < listFromTo; j++) {
+                        readElement(streamReader, () -> {
                             YearMonth from = YearMonth.parse(streamReader.readUTF());
                             YearMonth to = YearMonth.parse(streamReader.readUTF());
                             String title = streamReader.readUTF();
                             String description = streamReader.readUTF();
-                            if (description.equals("null")) {
-                                description = null;
-                            }
+                            description = !description.equals("null") ? description : null;
                             positions.add(new Position(from, to, title, description));
-                        }
+                        });
                         Organization organization = new Organization(webSite, positions);
                         organizations.add(organization);
                         organizationSection.setOrganizationList(organizations);
                         resume.addSection(sections, organizationSection);
                         break;
                 }
-            }
+            });
             return resume;
         }
     }
 
-    private interface WriteWithException<T> {
-        void write(T elem) throws IOException;
-    }
-
-    private <T> void writeDate(DataOutputStream dos, Collection<T> collection, WriteWithException<T> writer) throws IOException {
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, Writer<T> writer) throws IOException {
         dos.writeInt(collection.size());
         for (T elem : collection) {
             writer.write(elem);
+        }
+    }
+
+    private interface Writer<T> {
+        void write(T elem) throws IOException;
+    }
+
+    private interface Read {
+        void reading() throws IOException;
+    }
+
+    private void readElement(DataInputStream streamReader, Read element) throws IOException {
+        int size = streamReader.readInt();
+        for (int i = 0; i < size; i++) {
+            element.reading();
         }
     }
 }
