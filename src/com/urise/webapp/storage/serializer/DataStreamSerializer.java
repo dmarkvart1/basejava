@@ -40,23 +40,17 @@ public class DataStreamSerializer implements StreamSerializer {
                     default:
                         OrganizationSection organizationSectionList = ((OrganizationSection) entry.getValue());
                         List<Organization> organizationList = organizationSectionList.getOrganizationList();
-                        if (organizationList.get(0).getWebSite().nameOrganisation == null) {
-                            streamWriter.writeUTF("null");
-                        } else {
-                            streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().nameOrganisation));
-                        }
+                        String nameOrganisation = organizationList.get(0).getWebSite().nameOrganisation;
+                        streamWriter.writeUTF(nameOrganisation != null ? nameOrganisation : "null");
                         streamWriter.writeUTF(valueOf(organizationList.get(0).getWebSite().url));
 
                         writeWithException(streamWriter, organizationList.get(0).getPositions(), positions -> {
                             streamWriter.writeUTF(valueOf(positions.getFrom()));
                             streamWriter.writeUTF(valueOf(positions.getTo()));
                             streamWriter.writeUTF(valueOf(positions.getTitle()));
-                            if (positions.getDescription() == null) {
-                                streamWriter.writeUTF("null");
-                            } else {
-                                streamWriter.writeUTF(valueOf(positions.getDescription()));
-                            }
-                });
+                            String description = positions.getDescription();
+                            streamWriter.writeUTF(description != null ? description : "null");
+                        });
                 }
             });
         }
