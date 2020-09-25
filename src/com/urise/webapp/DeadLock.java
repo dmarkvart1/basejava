@@ -4,7 +4,7 @@ public class DeadLock {
     public static final Object Lock1 = new Object();
     public static final Object Lock2 = new Object();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         lockMetod(Lock1, Lock2);
         lockMetod(Lock2, Lock1);
     }
