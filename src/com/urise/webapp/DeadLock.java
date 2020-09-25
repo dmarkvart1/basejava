@@ -4,45 +4,26 @@ public class DeadLock {
     public static final Object Lock1 = new Object();
     public static final Object Lock2 = new Object();
 
-    public static void main(String[] args) {
-        Thread1 thread1 = new Thread1();
-        Thread2 thread2 = new Thread2();
-
-        thread1.start();
-        thread2.start();
+    public static void main(String[] args) throws InterruptedException {
+        lockMetod(Lock1, Lock2);
+        lockMetod(Lock2, Lock1);
     }
 
-    private static class Thread1 extends Thread {
-        public void run() {
-            synchronized (Lock1) {
-                System.out.println("Thread1 удерживает LOCK 1...");
+    private static void lockMetod(Object o1, Object o2) {
+        new Thread(() -> {
+            System.out.println(("Ждем " + o1.hashCode()).substring(0,6));
+            synchronized (o1) {
+                System.out.println(("Удерживаем " +o1.hashCode()).substring(0,12));
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Thread1 ждет Lock 2...");
-                synchronized (Lock2) {
-                    System.out.println("Thread1  удерживает Lock1 и Lock2...");
+                System.out.println(("Ждем "+o2.hashCode()).substring(0,6));
+                synchronized (o2) {
+                    System.out.println(("Удерживаем " +o2.hashCode()).substring(0,12));
                 }
             }
-        }
-    }
-
-    private static class Thread2 extends Thread {
-        public void run() {
-            synchronized (Lock2) {
-                System.out.println("Thread2 удерживает LOCK 2...");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Thread2 ждет Lock1...");
-                synchronized (Lock1) {
-                    System.out.println("Thread2  удерживает Lock 1 and Lock 2...");
-                }
-            }
-        }
+        }).start();
     }
 }
