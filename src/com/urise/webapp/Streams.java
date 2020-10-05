@@ -2,18 +2,21 @@ package com.urise.webapp;
 
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Streams {
-    public static void main(String[] args) {
-        int[] arr = {1, 2, 1, 4, 3, 2, 1, 2, 1, 3, 2, 1};
-        System.out.println(minValue(arr));
+import static com.sun.javafx.fxml.expression.Expression.divide;
 
-        List<Integer> list = Arrays.asList(1, 2, 1, 4, 3, 2, 1, 2, 1, 3, 2, 2);
+public class Streams {
+
+    public static void main(String[] args) {
+        int[] arr = {3, 2, 1, 5, 4};
+        System.out.println(minValue(arr));
+//        minValue(arr);
+        List<Integer> list = Arrays.asList(9, 8, 1, 6, 2, 1, 4, 3, 2, 1, 2, 1, 3, 9, 2, 1);
         System.out.println(oddOrEven(list));
 
+        System.out.println();
 //        List<Integer> list = Arrays.asList(1, 2, 3, 4, 3, 2, 1, 5, 6, 3, 7, 5);
 //        list.stream()
 //                .distinct()
@@ -41,14 +44,14 @@ public class Streams {
 //        System.out.println(integers.stream().filter(x -> (x % 2)==(sum2 % 2)).distinct().collect(Collectors.toList()));
     }
 
-    static List<Integer> oddOrEven(List<Integer> integers){
+    static List<Integer> oddOrEven(List<Integer> integers) {
+        System.out.println();
         int sum = integers.stream().reduce((acc, x) -> acc + x).get();
-        return integers.stream().filter(x -> (x % 2) == (sum % 2)).distinct().collect(Collectors.toList());
-
+        return integers.stream().filter(x -> (x % 2) == (sum % 2)).collect(Collectors.toList());
     }
 
     static int minValue(int[] values) {
-        return IntStream.of(values).distinct().sorted().reduce((i, i1) -> i+i1).getAsInt();
+        return IntStream.of(values).distinct().sorted().reduce(0,(i, i1) -> 10*i+i1);
     }
 }
 
