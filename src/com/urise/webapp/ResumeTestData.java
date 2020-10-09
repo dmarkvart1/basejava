@@ -32,11 +32,11 @@ public class ResumeTestData {
                                 new Organization.Position(date1, date2, "Tester", "content2"),
                                 new Organization.Position(date3, date6, "JuniorJava", "content3"))));
 
-                new OrganizationSection(
-                        new Organization("http://www.prom.ru", "PromTorg",
-                                new Organization.Position(date1, date2, "Java", "content1"),
-                                new Organization.Position(date1, date2, "Java Middle", "content2"),
-                                new Organization.Position(date3, date6, "Java Advice", "content3")));
+        new OrganizationSection(
+                new Organization("http://www.prom.ru", "PromTorg",
+                        new Organization.Position(date1, date2, "Java", "content1"),
+                        new Organization.Position(date1, date2, "Java Middle", "content2"),
+                        new Organization.Position(date3, date6, "Java Advice", "content3")));
 
         resume.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
@@ -45,11 +45,11 @@ public class ResumeTestData {
                                 new Organization.Position(date1, date5, "Student2", "content2"),
                                 new Organization.Position(date3, date4, "Aspirant3", "content3"))));
 
-                new OrganizationSection(
-                        new Organization("http://www.poik.ru", "Poisk",
-                                new Organization.Position(date1, date5, "Presale", "content1"),
-                                new Organization.Position(date1, date5, "Business analytic", "content2"),
-                                new Organization.Position(date3, date4, "Manager", "content3")));
+        new OrganizationSection(
+                new Organization("http://www.poik.ru", "Poisk",
+                        new Organization.Position(date1, date5, "Presale", "content1"),
+                        new Organization.Position(date1, date5, "Business analytic", "content2"),
+                        new Organization.Position(date3, date4, "Manager", "content3")));
 
         return resume;
     }
