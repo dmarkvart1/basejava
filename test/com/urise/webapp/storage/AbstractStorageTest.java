@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -21,10 +22,10 @@ public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected Storage storage;
 
-    private  Resume RESUME_1 = ResumeTestData.createResume("1001", "Ivan Petrovich");
-    private  Resume RESUME_2 = ResumeTestData.createResume("1002", "Alexandr Alexandrov");
-    private  Resume RESUME_3 = ResumeTestData.createResume("1003", "Fedor Pavlovich");
-    private  Resume RESUME_4 = ResumeTestData.createResume("1004", "Vadim Nikolaevich");
+    private  Resume RESUME_1 = ResumeTestData.createResume("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0", "Ivan Petrovich");
+    private  Resume RESUME_2 = ResumeTestData.createResume("4a2a895c-a662-421e-aed1-8e698e561c03", "Alexandr Alexandrov");
+    private  Resume RESUME_3 = ResumeTestData.createResume("5f3cbb03-3024-479e-b297-7b93d3fddb1b", "Fedor Pavlovich");
+    private  Resume RESUME_4 = ResumeTestData.createResume("2f3cbb03-3024-479e-b297-7b93d3fddb1c", "Vadim Nikolaevich");
 
     @Before
     public void setUp() {
@@ -43,7 +44,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void save() {
         storage.save(RESUME_4);
-        assertEquals(RESUME_4, storage.get("1004"));
+        assertEquals(RESUME_4, storage.get("2f3cbb03-3024-479e-b297-7b93d3fddb1c"));
         assertSize(4);
     }
 
@@ -54,7 +55,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        storage.update(new Resume("1001", "NewName"));
+        storage.update(new Resume("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0", "NewName"));
         System.out.println("Object is update: " + storage.get(RESUME_1.getUuid()));
     }
 
@@ -75,8 +76,8 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
-        storage.delete("1001");
-        storage.get("1001");
+        storage.delete("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0");
+        storage.get("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0");
         assertSize(0);
     }
 
