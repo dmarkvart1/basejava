@@ -16,16 +16,22 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
+    private static final String UUID1 = "4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0";
+    private static final String UUID2 = "4a2a895c-a662-421e-aed1-8e698e561c03";
+    private static final String UUID3 = "5f3cbb03-3024-479e-b297-7b93d3fddb1b";
+    private static final String UUID4 = "2f3cbb03-3024-479e-b297-7b93d3fddb1c";
+
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
+
     protected static final File STORAGE_DIR = Config.get().getStorageDir();
     protected Storage storage;
 
-    private  Resume RESUME_1 = ResumeTestData.createResume("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0", "Ivan Petrovich");
-    private  Resume RESUME_2 = ResumeTestData.createResume("4a2a895c-a662-421e-aed1-8e698e561c03", "Alexandr Alexandrov");
-    private  Resume RESUME_3 = ResumeTestData.createResume("5f3cbb03-3024-479e-b297-7b93d3fddb1b", "Fedor Pavlovich");
-    private  Resume RESUME_4 = ResumeTestData.createResume("2f3cbb03-3024-479e-b297-7b93d3fddb1c", "Vadim Nikolaevich");
+    private Resume RESUME_1 = new Resume(UUID1, "Ivan Petrovich");
+    private Resume RESUME_2 = ResumeTestData.createResume(UUID2, "Alexandr Alexandrov");
+    private Resume RESUME_3 = ResumeTestData.createResume(UUID3, "Fedor Pavlovich");
+    private Resume RESUME_4 = ResumeTestData.createResume(UUID4, "Vadim Nikolaevich");
 
     @Before
     public void setUp() {
@@ -44,7 +50,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void save() {
         storage.save(RESUME_4);
-        assertEquals(RESUME_4, storage.get("2f3cbb03-3024-479e-b297-7b93d3fddb1c"));
+        assertEquals(RESUME_4, storage.get(UUID4));
         assertSize(4);
     }
 
@@ -55,8 +61,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        storage.update(new Resume("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0", "NewName"));
-        System.out.println("Object is update: " + storage.get(RESUME_1.getUuid()));
+        Resume updated = new Resume(UUID2, "NewName");
+        updated.addContact(ContactType.PHONE, "54656664645");
+        updated.addContact(ContactType.EMAIL, "my@mail.my");
+        storage.update(updated);
+        assertGet(updated);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -76,8 +85,8 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
-        storage.delete("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0");
-        storage.get("4e0e8d60-2c29-41aa-959c-c12e9fe1d5b0");
+        storage.delete(UUID1);
+        storage.get(UUID1);
         assertSize(0);
     }
 
