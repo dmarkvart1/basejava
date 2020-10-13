@@ -3,13 +3,10 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.sql.Contact;
 import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -89,7 +86,6 @@ public class SqlStorage implements Storage {
     @Override
     public List<Resume> getAllSorted() {
         List<Resume> resumes = new ArrayList<>();
-        List<Contact> contacts = new ArrayList<>();
         sqlHelper.transactionalExecute(conn -> {
                     try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY full_name,uuid")) {
                         ResultSet rs = ps.executeQuery();
@@ -100,19 +96,15 @@ public class SqlStorage implements Storage {
                     try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact r ORDER BY resume_uuid")) {
                         ResultSet resultSet = ps.executeQuery();
                         while (resultSet.next()) {
-                            Contact contact = new Contact();
-                            contact.setValue(resultSet.getString("value"));
-                            contact.setType(ContactType.valueOf(resultSet.getString("type")));
-                            contact.setUuid(resultSet.getString("resume_uuid"));
-                            contacts.add(contact);
-                        }
-                        for (Resume list : resumes) {
-                            for (Contact uuid : contacts) {
-                                if (list.getUuid().equals(uuid.getUuid())) {
-                                    list.addContact(uuid.getType(), uuid.getValue());
+                            ContactType type = (ContactType.valueOf(resultSet.getString("type")));
+                            String value = resultSet.getString("value");
+                            String resume_uuid =(resultSet.getString("resume_uuid"));
+                            for (Resume list : resumes) {
+                                    if (list.getUuid().equals(resume_uuid)) {
+                                        list.addContact(type, value);
+                                    }
                                 }
                             }
-                        }
                         return resumes;
                     }
 
