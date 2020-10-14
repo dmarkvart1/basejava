@@ -1,8 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.exeption.NotExistStorageException;
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.*;
@@ -67,6 +66,7 @@ public class SqlStorage implements Storage {
                         ps.execute();
                     }
                     insertContact(conn, r);
+                    insertSections(conn, r);
                     return null;
                 }
         );
@@ -85,32 +85,33 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes = new ArrayList<>();
+//        List<Resume> resumes = new ArrayList<>();
+        Map<String, Resume> resumesMap = new LinkedHashMap<>();
         sqlHelper.transactionalExecute(conn -> {
-                    try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY full_name,uuid")) {
-                        ResultSet rs = ps.executeQuery();
-                        while (rs.next()) {
-                            resumes.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
-                        }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY full_name, uuid")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("uuid");
+                    Resume resume = resumesMap.get(uuid);
+                    if (resume == null) {
+                        resume = new Resume(uuid, rs.getString("full_name"));
+                        resumesMap.put(uuid, resume);
                     }
-                    try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact r ORDER BY resume_uuid")) {
-                        ResultSet resultSet = ps.executeQuery();
-                        while (resultSet.next()) {
-                            ContactType type = (ContactType.valueOf(resultSet.getString("type")));
-                            String value = resultSet.getString("value");
-                            String resume_uuid =(resultSet.getString("resume_uuid"));
-                            for (Resume list : resumes) {
-                                    if (list.getUuid().equals(resume_uuid)) {
-                                        list.addContact(type, value);
-                                    }
-                                }
-                            }
-                        return resumes;
-                    }
-
                 }
-        );
-        return resumes;
+            }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM contact ORDER BY resume_uuid")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("resume_uuid");
+                    Resume resume = resumesMap.get(uuid);
+                    ContactType type = (ContactType.valueOf(rs.getString("type")));
+                    String value = rs.getString("value");
+                    resume.addContact(type, value);
+                }
+            }
+            return null;
+        });
+        return new ArrayList<>(resumesMap.values());
     }
 
     @Override
@@ -127,6 +128,19 @@ public class SqlStorage implements Storage {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
                 ps.setString(3, e.getValue());
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        }
+    }
+
+    private void insertSections(Connection conn, Resume r) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid, type, value) VALUES (?,?,?)")) {
+            for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
+                ps.setString(1, r.getUuid());
+                ps.setString(2, e.getKey().name());
+                AbstractSection section = e.getValue();
+                ps.setString(3, String.valueOf(e.getValue()));
                 ps.addBatch();
             }
             ps.executeBatch();
