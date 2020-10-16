@@ -13,7 +13,10 @@ footer {
     margin: 20px 0;
 }
 
-th {
-    background-color: #4CAF50;
-    color: white;
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
 }
