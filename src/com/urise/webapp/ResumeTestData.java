@@ -20,10 +20,10 @@ public class ResumeTestData {
         Resume resume = new Resume(uuid, fullName);
         resume.addContact(ContactType.EMAIL, "moyemail@mail.ru");
         resume.addContact(ContactType.PHONE, "111324134134111");
-//        resume.addSection(SectionType.OBJECTIVE, new TextContentSection("Programmer"));
-//        resume.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe1"));
-//        resume.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Достижение1", "Achivment2", "Achivment3", "Achivment4"));
-//        resume.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
+        resume.addSection(SectionType.OBJECTIVE, new TextContentSection("Programmer"));
+        resume.addSection(SectionType.PERSONAL, new TextContentSection("AboutMe1"));
+        resume.addSection(SectionType.ACHIEVEMENT, new ListStringSection("Достижение1", "Achivment2", "Achivment3", "Achivment4"));
+        resume.addSection(SectionType.QUALIFICATIONS, new ListStringSection("JavaScript", "HTML5", "CSS", "SQL"));
 
 //        resume.addSection(SectionType.EXPERIENCE,
 //                new OrganizationSection(

@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -62,8 +61,12 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume updated = new Resume(UUID2, "NewName");
-        updated.addContact(ContactType.PHONE, "54656664645");
         updated.addContact(ContactType.EMAIL, "my@mail.my");
+        updated.addContact(ContactType.PHONE, "54656664645");
+        updated.addSection(SectionType.OBJECTIVE, new TextContentSection("NewProgrammer"));
+        updated.addSection(SectionType.PERSONAL, new TextContentSection("NewAboutMe"));
+        updated.addSection(SectionType.ACHIEVEMENT, new ListStringSection("NewДостижение1", "NewAchivment2", "NEwAchivment3", "NEwAchivment4"));
+        updated.addSection(SectionType.QUALIFICATIONS, new ListStringSection("NewJavaScript", "NewHTML5", "NEwCSS", "NEwSQL"));
         storage.update(updated);
         assertGet(updated);
     }
