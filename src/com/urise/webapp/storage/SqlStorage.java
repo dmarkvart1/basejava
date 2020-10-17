@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
+import jdk.nashorn.internal.parser.JSONParser;
 
 import java.sql.*;
 import java.util.*;
@@ -13,7 +14,7 @@ public class SqlStorage implements Storage {
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         try {
             Class.forName("org.postgresql.Driver");
-        }catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException(e);
         }
         sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
@@ -47,7 +48,18 @@ public class SqlStorage implements Storage {
 
                         String sectionValue = rs.getString(9);
                         SectionType sectionType = SectionType.valueOf(rs.getString(8));
-                        resume.addSection(sectionType, new TextContentSection(sectionValue));
+                        switch (sectionType) {
+                            case OBJECTIVE:
+                            case PERSONAL:
+                                resume.addSection(sectionType, new TextContentSection(sectionValue));
+                                break;
+                            default:
+                            case ACHIEVEMENT:
+                            case QUALIFICATIONS:
+                                resume.addSection(sectionType, new ListStringSection(sectionValue));
+                                break;
+                        }
+
                     } while (rs.next());
                     return resume;
                 });
@@ -154,7 +166,7 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, String.valueOf(e.getValue()));
+                ps.setString(3, String.valueOf(e.getValue()).replaceAll("\\[|\\]",""));
                 ps.addBatch();
             }
             ps.executeBatch();
