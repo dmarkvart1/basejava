@@ -1,12 +1,14 @@
 package com.urise.webapp.storage;
 
+import com.google.gson.Gson;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
-import jdk.nashorn.internal.parser.JSONParser;
 
 import java.sql.*;
 import java.util.*;
+
+import static com.urise.webapp.model.SectionType.*;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -56,6 +58,7 @@ public class SqlStorage implements Storage {
                             default:
                             case ACHIEVEMENT:
                             case QUALIFICATIONS:
+//                                test(new ListStringSection(Collections.singletonList(sectionValue)));
                                 resume.addSection(sectionType, new ListStringSection(sectionValue));
                                 break;
                         }
@@ -112,7 +115,6 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-//        List<Resume> resumes = new ArrayList<>();
         Map<String, Resume> resumesMap = new LinkedHashMap<>();
         sqlHelper.transactionalExecute(conn -> {
             try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r ORDER BY full_name, uuid")) {
@@ -134,6 +136,21 @@ public class SqlStorage implements Storage {
                     ContactType type = (ContactType.valueOf(rs.getString("type")));
                     String value = rs.getString("value");
                     resume.addContact(type, value);
+                }
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM section ORDER BY resume_uuid")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("resume_uuid");
+                    Resume resume = resumesMap.get(uuid);
+                    SectionType type = (SectionType.valueOf(rs.getString("type")));
+                    String value = rs.getString("value");
+                    if (answerSectionType(type)){
+                        resume.addSection(type, new TextContentSection(value));
+                    }else {
+                        resume.addSection(type, new ListStringSection(value));
+                    }
                 }
             }
             return null;
@@ -173,19 +190,51 @@ public class SqlStorage implements Storage {
         }
     }
 
-    private void deleteContact(Connection conn, Resume r) {
-        sqlHelper.execute("DELETE  FROM contact WHERE resume_uuid=?", ps -> {
+    private void deleteContact(Connection conn, Resume r) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM contact WHERE resume_uuid=?")) {
             ps.setString(1, r.getUuid());
             ps.execute();
-            return null;
-        });
+        }
     }
 
-    private void deleteSection(Connection conn, Resume r) {
-        sqlHelper.execute("DELETE  FROM section WHERE resume_uuid=?", ps -> {
+    private void deleteSection(Connection conn, Resume r) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM section WHERE resume_uuid=?")) {
             ps.setString(1, r.getUuid());
             ps.execute();
-            return null;
-        });
+        }
     }
+
+    private boolean answerSectionType(SectionType sectionType) {
+        switch (sectionType) {
+            case OBJECTIVE:
+            case PERSONAL:
+                return true;
+            default:
+            case ACHIEVEMENT:
+            case QUALIFICATIONS:
+                return false;
+        }
+    }
+
+//    private void test(ListStringSection listStringSection){
+//        Gson gson = new Gson();
+//        String sample = gson.toJson(listStringSection);
+//        ListStringSection fromJsonSection = gson.fromJson(sample, ListStringSection.class);
+//        int i=0;
+//        for(String name : fromJsonSection.getLists()){
+//            i++;
+//            String[] array = name.substring(1, name.length() - 1).split(",");
+//            System.out.println(array[i]);
+//            }
+//        }
 }
+
+//    String sample = gson.toJson(e.getValue());
+//                ListStringSection fromJsonSection = gson.fromJson(sample, ListStringSection.class);
+//                int i = 0;
+//                for (String elem : fromJsonSection.getLists()) {
+//                    i++;
+//                    section = Arrays.asList(elem.substring(1, elem.length() - 1).split(","));
+//                    section.set(i, elem + "/n");
+//                }
+//                ps.setString(3, String.valueOf(section));
