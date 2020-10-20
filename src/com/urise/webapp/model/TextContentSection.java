@@ -18,16 +18,14 @@ public class TextContentSection extends AbstractSection {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof TextContentSection)) return false;
         TextContentSection that = (TextContentSection) o;
-
         return content.equals(that.content);
     }
 
     @Override
     public int hashCode() {
-        return content.hashCode();
+        return Objects.hash(content);
     }
 
     @Override

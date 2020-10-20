@@ -34,15 +34,13 @@ public class ListStringSection extends AbstractSection {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ListStringSection that = (ListStringSection) o;
-
-        return lists.equals(that.lists);
+        if (!(o instanceof ListStringSection)) return false;
+        ListStringSection section = (ListStringSection) o;
+        return lists.equals(section.lists);
     }
 
     @Override
     public int hashCode() {
-        return lists.hashCode();
+        return Objects.hash(lists);
     }
 }
