@@ -1,14 +1,11 @@
 package com.urise.webapp.storage;
 
-import com.google.gson.Gson;
 import com.urise.webapp.exeption.NotExistStorageException;
 import com.urise.webapp.model.*;
 import com.urise.webapp.sql.SqlHelper;
 
 import java.sql.*;
 import java.util.*;
-
-import static com.urise.webapp.model.SectionType.*;
 
 public class SqlStorage implements Storage {
     public final SqlHelper sqlHelper;
@@ -50,19 +47,12 @@ public class SqlStorage implements Storage {
 
                         String sectionValue = rs.getString(9);
                         SectionType sectionType = SectionType.valueOf(rs.getString(8));
-                        switch (sectionType) {
-                            case OBJECTIVE:
-                            case PERSONAL:
-                                resume.addSection(sectionType, new TextContentSection(sectionValue));
-                                break;
-                            default:
-                            case ACHIEVEMENT:
-                            case QUALIFICATIONS:
-//                                test(new ListStringSection(Collections.singletonList(sectionValue)));
-                                resume.addSection(sectionType, new ListStringSection(sectionValue));
-                                break;
-                        }
 
+                        if (answerSectionType(sectionType)){
+                            resume.addSection(sectionType, new TextContentSection(sectionValue));
+                        }else {
+                            resume.addSection(sectionType, new ListStringSection(sectionValue));
+                        }
                     } while (rs.next());
                     return resume;
                 });
