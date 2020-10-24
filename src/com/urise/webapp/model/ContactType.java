@@ -4,8 +4,18 @@ public enum ContactType {
     ADDRESS("Адрес: "),
     PHONE("Телефон: "),
     MOBILE("Мобильный: "),
-    EMAIL("Эл.почта: "),
-    SKYPE("Skype: "),
+    EMAIL("Эл.почта: ") {
+        @Override
+        public String toHtml0(String value) {
+            return "<a href='mailto:" + value + "'>" + value + "</a>";
+        }
+    },
+    SKYPE("Skype: ") {
+        @Override
+        public String toHtml0(String value) {
+            return "<a href='skype:" + value + "'>" + value + "</a>";
+        }
+    },
     SITE("Homepage: ");
 
     private String title;
@@ -16,6 +26,14 @@ public enum ContactType {
 
     public String getTitle() {
         return title;
+    }
+
+    protected String toHtml0(String value) {
+        return title + ": " + value;
+    }
+
+    public String toHtml(String value) {
+        return (value == null) ? "" : toHtml0(value);
     }
 
 }
