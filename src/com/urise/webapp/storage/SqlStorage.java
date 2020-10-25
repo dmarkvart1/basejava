@@ -169,7 +169,7 @@ public class SqlStorage implements Storage {
             for (Map.Entry<SectionType, AbstractSection> e : resume.getSections().entrySet()) {
                 ps.setString(1, resume.getUuid());
                 ps.setString(2, e.getKey().name());
-                ps.setString(3, String.valueOf(e.getValue()).replaceAll("\\[|\\]", ""));
+                ps.setString(3, removeElement(String.valueOf(e.getValue())));
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -201,14 +201,15 @@ public class SqlStorage implements Storage {
         String value = rs.getString("value");
         if (value != null) {
             SectionType type = SectionType.valueOf(rs.getString("type"));
-                                if (answerSectionType(type)){
-                        resume.addSection(type, new TextContentSection(value));
-                    }else {
-                        resume.addSection(type, new ListStringSection(value));
-                    }
+            if (answerSectionType(type)) {
+                resume.addSection(type, new TextContentSection(value));
+            } else {
+                resume.addSection(type, new ListStringSection(value));
+            }
         }
     }
-        private boolean answerSectionType(SectionType sectionType) {
+
+    public static boolean answerSectionType(SectionType sectionType) {
         switch (sectionType) {
             case OBJECTIVE:
             case PERSONAL:
@@ -218,6 +219,9 @@ public class SqlStorage implements Storage {
             case QUALIFICATIONS:
                 return false;
         }
+    }
+    public static String removeElement(String elem) {
+        return elem.replaceAll("\\[|\\]", "");
     }
 }
 //
@@ -261,7 +265,6 @@ public class SqlStorage implements Storage {
 //        }
 //        return resume;
 //    }
-
 
 
 //    private void test(ListStringSection listStringSection){

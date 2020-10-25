@@ -1,4 +1,5 @@
 <%@ page import="com.urise.webapp.model.ContactType" %>
+<%@ page import="com.urise.webapp.storage.SqlStorage" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -10,7 +11,7 @@
     <title>Просмотр резюме: ${resume.fullName}</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/jsp/fragments/header.jsp"/>
+<jsp:include page="fragments/header.jsp"/>
 
 <section>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
@@ -19,12 +20,22 @@
             <dt>Имя:</dt>
             <dd><input type="text" name="fullName" size=70 value="${resume.fullName}"></dd>
         </dl>
-        <h3>Контакты</h3>
-            <c:forEach var="type" items="<%=ContactType.values()%>">
-        <dl>
-            <dt>${type.title}</dt>
-            <dd><input type="text" name="${type.name()}" size="30" value="${resume.getContact(type)}"></dd>
-        </dl>
+        <h3>Контакты:</h3>
+        <c:forEach var="type" items="<%=ContactType.values()%>">
+            <dl>
+                <dt>${type.title}</dt>
+                <dd><input type="text" name="${type.name()}" size="30" value="${resume.getContact(type)}"></dd>
+            </dl>
+        </c:forEach>
+        <h3>Секции:</h3>
+        <c:forEach var="sectionEntry" items="<%=resume.getSections()%>">
+            <jsp:useBean id="sectionEntry"
+                         type="java.util.Map.Entry<com.urise.webapp.model.SectionType, java.lang.String>"/>
+            <dl>
+                <dt>${sectionEntry.getKey().title}</dt>
+                <dd><input type="text" name="${sectionEntry.getKey().name()}" size="30"
+                           value="${SqlStorage.removeElement(sectionEntry.getValue())}"></dd>
+            </dl>
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>
